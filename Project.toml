@@ -1,0 +1,7 @@
+name = "NeatText"
+uuid = "8adb0dfe-366b-4bc1-84b9-3d7e76b2064f"
+authors = ["Jesse E.Agbe(JCharis) <jcharistech.com>"]
+version = "0.0.1"
+
+[deps]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
