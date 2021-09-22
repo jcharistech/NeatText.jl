@@ -1,16 +1,20 @@
 module NeatText
 
 # Export for Removers
-export remove_patterns,fix_contractions,remove_terms_in_bracket
+export remove_patterns,remove_stopwords,fix_contractions,remove_terms_in_bracket
 export remove_puncts,remove_numbers,remove_phonenumbers,remove_currencies,remove_currency_symbols,remove_special_characters
 export remove_emails,remove_urls,remove_hashtags,remove_htmltags,remove_userhandles,remove_emojis
 export remove_md5sha,remove_btc,remove_pobox,remove_mastercards,remove_visacards,remove_streetaddress
 
 # Export for Extractors
+export extract_patterns,extract_stopwords
 export extract_puncts,extract_numbers,extract_phonenumbers,extract_currencies,extract_dates
 export extract_emails,extract_urls,extract_hashtags,extract_htmltags,extract_emojis,extract_userhandles
 export extract_mastercards,extract_visacards,extract_creditcards,extract_md5sha,extract_pobox,extract_streetaddress
+export extract_terms_in_bracket
 
+# Export for Misc Functions
+export clean_text
 
 # Constants
 const PUNCTS_REGEX = Regex("[!&'()*,-./:;?@[\\]^_`{|}]")
@@ -35,7 +39,8 @@ const CreditCard_REGEX = r"(?:(?:(?:\d{4}[- ]?){3}\d{4}|\d{15,16}))"
 const VISACard_REGEX = r"4\d{3}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}"
 const MASTERCard_REGEX  = r"5[1-5]\d{2}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}"
 const MD5_SHA_REGEX = r"([0-9a-fA-F]{32})|([0-9a-fA-F]{40})|([0-9a-fA-F]{64})"
-const URL_REGEX= r"(?:^|(?<![\w\/\.]))|(?:(?:https?:\/\/|ftp:\/\/|www\d{0,3}\.))"
+# const URL_REGEX= r"(?:^|(?<![\w\/\.]))|(?:(?:https?:\/\/|ftp:\/\/|www\d{0,3}\.))"
+const URL_REGEX = r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 
 const EMOJI_REGEX = Regex("""[
                        u"\U0001F600-\U0001F64F"  # for emoticons
@@ -344,11 +349,11 @@ function remove_terms_in_bracket(text::AbstractString;bracket_form="curly")
         SQUARE_BRACKET_REGEX = r"\[(.*?)\]" 
         NORMAL_BRACKET_REGEX = r"\((.*?)\)" 
         if (bracket_form == "curly") | (bracket_form == "{}")
-            result = replace.(text,CURLY_BRACKET_REGEX,"")
+            result = replace.(text,CURLY_BRACKET_REGEX=>"")
         elseif (bracket_form == "square") | (bracket_form == "[]")
-            result = replace.(text,SQUARE_BRACKET_REGEX,"")
+            result = replace.(text,SQUARE_BRACKET_REGEX=>"")
         elseif (bracket_form == "normal") | (bracket_form == "()")
-            result = replace.(text,NORMAL_BRACKET_REGEX,"")
+            result = replace.(text,NORMAL_BRACKET_REGEX=>"")
            end
         return result
 end 
@@ -366,166 +371,91 @@ function count_char(s::AbstractString)
    return res
 end
 
-# # ## Extract Terms
-
-include("TextExtractors.jl")
-# ## Extract Terms
-# # returns RegexMatch Type
-# # function extract_numbers(s::AbstractString)
-# #            res = eachmatch(r"\d+",s)
-# #            return collect(res)
-# # end
-
-# """
-# extract_numbers: Extract all numbers from a given text
-# """
-# function extract_numbers(text::AbstractString)
-#         res = [m.match for m in eachmatch(NUMBERS_REGEX,text)]
-#     	return res
-#     end
 
 
-# """
-# extract_phonenumbers: Extract all phone numbers from a given text
-# """
-# function extract_phonenumbers(text::AbstractString)
-#         res = [m.match for m in eachmatch(PHONENUMBERS_REGEX,text)]
-#     	return res
-#     end
-
-
-# """
-# extract_currencies: Extract all currencies from a given text
-# """
-# function extract_currencies(text::AbstractString)
-#         res = [m.match for m in eachmatch(CURRENCY_REGEX,text)]
-#     	return res
-#     end
-
-
-# """
-# extract_btc: Extract all Bitcoin BTC Address/Values from a given text
-# """
-# function extract_btc(text::AbstractString)
-#         res = [m.match for m in eachmatch(BTC_ADDRESS_REGEX,text)]
-#     	return res
-#     end
-
-
-# """
-# extract_mastercards: Extract all MasterCard Address/Values from a given text
-# """
-# function extract_mastercards(text::AbstractString)
-#         res = [m.match for m in eachmatch(MASTERCard_REGEX,text)]
-#     	return res
-#     end
-
-# """
-# extract_visacards: Extract all VisaCards Address/Values from a given text
-# """
-# function extract_visacards(text::AbstractString)
-#         res = [m.match for m in eachmatch(VISACard_REGEX,text)]
-#     	return res
-#     end
+# A Dictionary of Regular Expressions
+const REGEX_DICT = Dict(
+	:puncts => PUNCTS_REGEX,
+	:special_char => SPECIAL_CHARACTERS_REGEX,
+	:userhandles => USER_HANDLES_REGEX,
+	:emails => EMAIL_REGEX,
+	:numbers => NUMBERS_REGEX,
+	:phonenumbers => PHONENUMBERS_REGEX,
+	:mentions => r"@\w+",
+	:hashtags => r"#\w+",
+	:urls => r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
+	:htmltags => HTML_TAGS_REGEX
+);
 
 
 
-# """
-# extract_emails: Extract all emails from a given text
-# """
-# function extract_emails(text::AbstractString)
-#         res = [m.match for m in eachmatch(EMAIL_REGEX,text)]
-#         return res
-#     end
+"""
+clean_text: Clean A Given Text using a set of patterns
+
+usepatterns: An array or collection of predefined pattern symbols
+	- [:emails,:urls,:mentions:hashtags,:userhandles,:htmltags:puncts,:numbers,:phonenumbers,:special_char]
+
+   [:emails
+	:urls
+	:mentions
+	:hashtags
+	:userhandles
+	:htmltags
+	:puncts
+	:numbers
+	:phonenumbers
+	:special_char]
+
+note:
+----
+	- the order of the patterns matters in how the text is cleaned
+"""
+function clean_text(text::AbstractString;usepatterns::Array)
+	for p in usepatterns
+		text = replace.(text,REGEX_DICT[p]=> "")
+	end
+	return text
+end 
 
 
-# """
-# extract_urls: Extract all urls from a given text
-# """
-# function extract_urls(text::AbstractString)
-#         res = [m.match for m in eachmatch(URL_REGEX,text)]
-#     	return res
-#     end
+include("stopwordlist.jl")
+
+"""
+remove_stopwords: returns a text with all stopwords in the given text removed
+param:
+-----
+ - lang: specify the language for the stopwords : en,es,fr,ru,yo,de
+"""
+function remove_stopwords(text::AbstractString,lang="en")
+	if lang == "en"
+		stopwords_in_use = STOPWORDS_en
+    elseif lang == "es"
+    	stopwords_in_use = STOPWORDS_es
+    elseif lang == "fr"
+    	stopwords_in_use = STOPWORDS_fr
+    elseif lang == "ru"
+    	stopwords_in_use = STOPWORDS_ru
+    elseif lang == "yo"
+    	stopwords_in_use = STOPWORDS_yo
+    elseif lang == "de"
+    	stopwords_in_use = STOPWORDS_de
+    else
+    	stopwords_in_use = STOPWORDS_en
+    end
+
+	alltokens = []
+	for w in split(lowercase(text)," ")
+		if w ∉ stopwords_in_use
+			push!(alltokens,w)
+		end
+	end 
+	return join(alltokens," ")
+
+end
+
+# Extractors
+include("textExtractors.jl")
 
 
-# """
-# extract_puncts: Extract all punctuations from a given text
-# """
-# function extract_puncts(text::AbstractString)
-#         res = [m.match for m in eachmatch(PUNCTS_REGEX,text)]
-#     	return res
-#     end
-
-
-# """
-# extract_special_characters: Extract all special characters from a given text
-# """
-# function extract_special_characters(text::AbstractString)
-#         res = [m.match for m in eachmatch(SPECIAL_CHARACTERS_REGEX,text)]
-#     	return res
-#     end
-
-# """
-# extract_emojis: Extract all emojis from a given text
-# """
-# function extract_emojis(text::AbstractString)
-#         res = [m.match for m in eachmatch(EMOJI_REGEX,text)]
-#     	return res
-#     end
-
-
-# """
-# extract_userhandles: Extract all userhandles and mentions from a given text
-# """
-# function extract_userhandles(text::AbstractString)
-#         res = [m.match for m in eachmatch(USER_HANDLES_REGEX,text)]
-#     	return res
-#     end
-
-
-# """
-# extract_hashtags: Extract all hashtags from a given text
-# """
-# function extract_hashtags(text::AbstractString)
-#         res = [m.match for m in eachmatch(HASHTAG_REGEX,text)]
-#     	return res
-#     end
-
-
-
-# """
-# extract_userhandles: Extract all dates from a given text
-# """
-# function extract_dates(text::AbstractString)
-#         res = [m.match for m in eachmatch(DATE_REGEX,text)]
-#     	return res
-#     end
-
-
-# """
-# extract_pobox: Extract all Post Office Box from a given text
-# """
-# function extract_pobox(text::AbstractString)
-#         res = [m.match for m in eachmatch(PoBOX_REGEX,text)]
-#     	return res
-#     end
-
-
-# """
-# extract_streetaddress: Extract all Street Address from a given text
-# """
-# function extract_streetaddress(text::AbstractString)
-#         res = [m.match for m in eachmatch(STREET_ADDRESS_REGEX,text)]
-#     	return res
-#     end
-
-
-# """
-# extract_md5sha: Extract all MD5 or SHA Hashes from a given text
-# """
-# function extract_md5sha(text::AbstractString)
-#         res = [m.match for m in eachmatch(MD5_SHA_REGEX,text)]
-#     	return res
-#     end
 
 end # module
