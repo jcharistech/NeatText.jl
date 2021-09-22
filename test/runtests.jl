@@ -1,7 +1,8 @@
 using Test
 using NeatText
 
-@testset "NeatText Testing" begin
+
+@testset "NeatText.jl" begin
 
     doc1 = """This is the mail example@gmail.com ,our WEBSITE is https://example.com 😊. This is visa 4111 1111 1111 1111 and bitcoin 1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2 with mastercard 5500 0000 0000 0004. Send it to PO Box 555, KNU"""
     doc2 = "he was saying <h2>hello</h2> but [Jane] said why that {word}"

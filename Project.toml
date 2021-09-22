@@ -1,7 +1,13 @@
 name = "NeatText"
-uuid = "8adb0dfe-366b-4bc1-84b9-3d7e76b2064f"
-authors = ["Jesse E.Agbe(JCharis) <jcharistech.com>"]
+uuid = "d28e2158-296f-49f9-928e-754b5a3efa02"
+authors = ["JCharis <jcharistech.com> and contributors"]
 version = "0.0.1"
 
-[deps]
+[compat]
+julia = "1.5.3"
+
+[extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
