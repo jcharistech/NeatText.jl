@@ -77,3 +77,7 @@ With NeatText.jl, you can extract terms from a given terms based on either prede
 >>> NeatText.extract_btc(docx1)
 >>> NeatText.extract_stopwords(docx1)
 ```
+
+#### Note:
+NeatText.jl is also available for Python as `neattext` that operates basically the
+same way.

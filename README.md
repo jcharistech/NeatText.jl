@@ -1,6 +1,6 @@
 # NeatText.jl
 A Simple Text Cleaning Package For NLP Task in Julia Language
-It is a port of the `NeatText` python package for text cleaning and NLP task.
+It is a port of the `NeatText` python package for text cleaning and NLP task,you can check it out [here](https://jcharis.github.io/neattext/).
 NeatText.jl offers some main features for text cleaning. These include;
 + removing terms,noisy data or unwanted text 
 + extracting terms,noisy data or unwanted text 
@@ -21,6 +21,12 @@ Pkg.add("NeatText")
 ```
 
 + You can also clone this repository and work with it.
+or 
+```julia-repl
+] add github.com/jcharistech/NeatText.jl
+
+```
+You can check out the full docs [here](https://jcharistech.github.io/NeatText.jl/)
 
 ### Basic Usage
 ```julia
