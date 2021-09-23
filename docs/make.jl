@@ -1,3 +1,4 @@
+push!(LOAD_PATH,"../src/")
 using NeatText
 using Documenter
 
@@ -15,6 +16,9 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "User Guide" => "userguide.md",
+        "API Reference" => "apireference.md",
+
     ],
 )
 

@@ -6,6 +6,13 @@ export remove_puncts,remove_numbers,remove_phonenumbers,remove_currencies,remove
 export remove_emails,remove_urls,remove_hashtags,remove_htmltags,remove_userhandles,remove_emojis
 export remove_md5sha,remove_btc,remove_pobox,remove_mastercards,remove_visacards,remove_streetaddress
 
+# Export for Removers!(Mutating Fxns)
+export remove_patterns!,remove_stopwords!,fix_contractions!,remove_terms_in_bracket!
+export remove_puncts!,remove_numbers!,remove_phonenumbers!,remove_currencies!,remove_currency_symbols!,remove_special_characters!
+export remove_emails!,remove_urls!,remove_hashtags!,remove_htmltags!,remove_userhandles!,remove_emojis!
+export remove_md5sha!,remove_btc!,remove_pobox!,remove_mastercards!,remove_visacards!,remove_streetaddress!
+
+
 # Export for Extractors
 export extract_patterns,extract_stopwords
 export extract_puncts,extract_numbers,extract_phonenumbers,extract_currencies,extract_dates
@@ -14,7 +21,7 @@ export extract_mastercards,extract_visacards,extract_creditcards,extract_md5sha,
 export extract_terms_in_bracket
 
 # Export for Misc Functions
-export clean_text
+export clean_text!,clean_text
 
 # Constants
 const PUNCTS_REGEX = Regex("[!&'()*,-./:;?@[\\]^_`{|}]")
@@ -53,6 +60,10 @@ const EMOJI_REGEX = Regex("""[
 
 """
 remove_patterns: remove from given text your specified patterns
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_patterns(text::AbstractString,pattern::Regex)
 	return replace(text,pattern=>" ")
@@ -60,6 +71,10 @@ end
 
 """
 remove_puncts: Remove punctuations from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_puncts(text::AbstractString)
 	return replace.(text,PUNCTS_REGEX=>" ")
@@ -68,6 +83,10 @@ end
 
 """
 remove_special_characters: Remove Special Characters from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_special_characters(text::AbstractString)
 	return replace.(text,SPECIAL_CHARACTERS_REGEX=>" ")
@@ -76,6 +95,10 @@ end
 
 """
 remove_emails: Remove emails from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_emails(text::AbstractString)
 	return replace.(text,EMAIL_REGEX=>" ")
@@ -84,6 +107,10 @@ end
 
 """
 remove_emojis: Remove emojis from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_emojis(text::AbstractString)
 	return replace.(text,EMOJI_REGEX=>" ")
@@ -93,6 +120,10 @@ end
 
 """
 remove_numbers: Remove numbers from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_numbers(text::AbstractString)
 	return replace.(text,NUMBERS_REGEX=>" ")
@@ -101,6 +132,10 @@ end
 
 """
 remove_phonenumbers: Remove phonenumbers from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_phonenumbers(text::AbstractString)
 	return replace.(text,PHONENUMBERS_REGEX=>" ")
@@ -108,6 +143,10 @@ end
 
 """
 remove_htmltags: Remove htmltags from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_htmltags(text::AbstractString)
 	return replace.(text,HTML_TAGS_REGEX=>" ")
@@ -116,6 +155,10 @@ end
 
 """
 remove_urls: Remove URLS from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_urls(text::AbstractString)
 	return replace.(text,URL_REGEX=>" ")
@@ -123,6 +166,10 @@ end
 
 """
 remove_dates: Remove Dates from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_dates(text::AbstractString)
 	return replace.(text,DATE_REGEX=>" ")
@@ -131,6 +178,10 @@ end
 
 """
 remove_currencies: Remove currencies from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_currencies(text::AbstractString)
 	return replace.(text,CURRENCY_REGEX=>" ")
@@ -138,6 +189,10 @@ end
 
 """
 remove_currency_symbols: Remove currency symbols from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_currency_symbols(text::AbstractString)
 	return replace.(text,CURRENCY_SYMB_REGEX=>" ")
@@ -146,6 +201,10 @@ end
 
 """
 remove_userhandles: Remove userhandles or mentions from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_userhandles(text::AbstractString)
 	return replace.(text,USER_HANDLES_REGEX=>" ")
@@ -153,6 +212,10 @@ end
 
 """
 remove_hashtags: Remove hashtags symbols from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_hashtags(text::AbstractString)
 	return replace.(text,HASHTAG_REGEX=>" ")
@@ -161,6 +224,10 @@ end
 
 """
 remove_streetaddress: Remove street addresses from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_streetaddress(text::AbstractString)
 	return replace.(text,STREET_ADDRESS_REGEX=>" ")
@@ -168,6 +235,10 @@ end
 
 """
 remove_pobox: Remove Post Office Box Address from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_pobox(text::AbstractString)
 	return replace.(text,PoBOX_REGEX=>" ")
@@ -175,6 +246,10 @@ end
 
 """
 remove_btc: Remove BIT Address from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_btc(text::AbstractString)
 	return replace.(text,BTC_ADDRESS_REGEX=>" ")
@@ -184,6 +259,10 @@ end
 
 """
 remove_mastercard: Remove Master Card from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_mastercards(text::AbstractString)
 	return replace.(text,MASTERCard_REGEX=>" ")
@@ -191,6 +270,10 @@ end
 
 """
 remove_visacard: Remove Visa Card numbers from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_visacards(text::AbstractString)
 	return replace.(text,VISACard_REGEX=>" ")
@@ -199,6 +282,10 @@ end
 
 """
 remove_creditcards: Remove CreditCard numbers from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_creditcards(text::AbstractString)
 	return replace.(text,CreditCard_REGEX=>" ")
@@ -207,6 +294,10 @@ end
 
 """
 remove_md5sha: Remove MD5 and SHA values from a given text
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_md5sha(text::AbstractString)
 	return replace.(text,MD5_SHA_REGEX =>" ")
@@ -425,6 +516,10 @@ remove_stopwords: returns a text with all stopwords in the given text removed
 param:
 -----
  - lang: specify the language for the stopwords : en,es,fr,ru,yo,de
+
+params:
+	-text: text or string of text to be cleaned
+
 """
 function remove_stopwords(text::AbstractString,lang="en")
 	if lang == "en"
