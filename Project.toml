@@ -1,7 +1,7 @@
 name = "NeatText"
 uuid = "d28e2158-296f-49f9-928e-754b5a3efa02"
 authors = ["JCharis <jcharistech.com> and contributors"]
-version = "0.0.1"
+version = "0.0.2"
 
 [compat]
 julia = "1.5.3"

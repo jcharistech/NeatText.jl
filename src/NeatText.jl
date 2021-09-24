@@ -60,7 +60,6 @@ const EMOJI_REGEX = Regex("""[
 
 """
 remove_patterns: remove from given text your specified patterns
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -71,7 +70,6 @@ end
 
 """
 remove_puncts: Remove punctuations from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -83,7 +81,6 @@ end
 
 """
 remove_special_characters: Remove Special Characters from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -95,7 +92,6 @@ end
 
 """
 remove_emails: Remove emails from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -107,7 +103,6 @@ end
 
 """
 remove_emojis: Remove emojis from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -120,7 +115,6 @@ end
 
 """
 remove_numbers: Remove numbers from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -132,7 +126,6 @@ end
 
 """
 remove_phonenumbers: Remove phonenumbers from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -143,7 +136,6 @@ end
 
 """
 remove_htmltags: Remove htmltags from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -155,7 +147,6 @@ end
 
 """
 remove_urls: Remove URLS from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -166,7 +157,6 @@ end
 
 """
 remove_dates: Remove Dates from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -178,7 +168,6 @@ end
 
 """
 remove_currencies: Remove currencies from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -189,7 +178,6 @@ end
 
 """
 remove_currency_symbols: Remove currency symbols from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -201,7 +189,6 @@ end
 
 """
 remove_userhandles: Remove userhandles or mentions from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -212,7 +199,6 @@ end
 
 """
 remove_hashtags: Remove hashtags symbols from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -224,7 +210,6 @@ end
 
 """
 remove_streetaddress: Remove street addresses from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -235,7 +220,6 @@ end
 
 """
 remove_pobox: Remove Post Office Box Address from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -246,7 +230,6 @@ end
 
 """
 remove_btc: Remove BIT Address from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -259,7 +242,6 @@ end
 
 """
 remove_mastercard: Remove Master Card from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -270,7 +252,6 @@ end
 
 """
 remove_visacard: Remove Visa Card numbers from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -282,7 +263,6 @@ end
 
 """
 remove_creditcards: Remove CreditCard numbers from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -294,7 +274,6 @@ end
 
 """
 remove_md5sha: Remove MD5 and SHA values from a given text
-
 params:
 	-text: text or string of text to be cleaned
 
@@ -516,7 +495,6 @@ remove_stopwords: returns a text with all stopwords in the given text removed
 param:
 -----
  - lang: specify the language for the stopwords : en,es,fr,ru,yo,de
-
 params:
 	-text: text or string of text to be cleaned
 
