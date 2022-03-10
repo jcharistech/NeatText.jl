@@ -47,11 +47,11 @@ You can check out the full docs [here](https://jcharistech.github.io/NeatText.jl
 
 ### Using `clean_text` function for bulk cleaning
 NeatText.jl offers a super function `clean_text` that allows you to do bulk cleaning of text using
-predefined patterns. These patterns include the following
+predefined patterns as symbols. These patterns include the following
 - [:emails,:urls,:mentions:hashtags,:userhandles,:htmltags:puncts,:numbers,:phonenumbers,:special_char]
 
 More patterns can be included.
-**Note** the predefined patterns follows an order and the order will influence how the text is cleaned.
+**Note** The predefined patterns follows an order and the order will influence how the text is cleaned.
 
 ```julia
 >>> docx1 ="your text here with emails@gmail.com"
